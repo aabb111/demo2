@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>摇一摇</title>
+</head>
+
+<script>
+	document.addEventListener("mousedown", mouse, false);//点击鼠标时触发事件
+	document.addEventListener("keydown", key, false);//按下键盘按键时触发事件
+
+	function mouse(){
+		alert('ddd');
+	}
+	function key(){
+		document.removeEventListener("mousedown", mouse, false);
+		alert('xxx');
+	}
+</script>
+<body>
+
+
+</body>
+</html>

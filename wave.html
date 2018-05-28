@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+      #canvas{
+        border: 1px solid #000;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas" width="400" height="300"></canvas>
+    <script type="text/javascript">
+      class Wave {
+        constructor() {
+          this.canvas = document.getElementById('canvas')
+          this.ctx = this.canvas.getContext('2d')
+          this.position = {
+            x: 0,
+            y: 0
+          }
+          this.radius = 0
+          this.rate = 2
+        }
+
+        draw() {
+            let ctx = this.ctx
+            ctx.beginPath()
+            ctx.arc(this.position.x, this.position.y, this.radius, 0, Math.PI*2, true)
+            ctx.stroke()
+
+            if (this.radius < 500) {
+              this.radius += this.rate
+            }
+        }
+
+        getMousePos(x, y) {
+          let bbox = this.canvas.getBoundingClientRect()
+          return {
+            x: Math.round((x-bbox.left) * (this.canvas.width/bbox.width)),
+            y: Math.round((y-bbox.top) * (this.canvas.height/bbox.height))
+          }
+        }
+
+        setMousePos(x, y) {
+          this.position.x = x
+          this.position.y = y
+        }
+
+        initRadius(val) {
+          this.radius = val
+        }
+      }
+
+      class Animation {
+        constructor() {
+          this.waveList = []
+          this.canvas = document.getElementById('canvas')
+          this.ctx = this.canvas.getContext('2d')
+        }
+
+        animate() {
+          animation.ctx.clearRect(0,0,400,300)
+          for (let i = 0; i < animation.waveList.length; i++) {
+            animation.waveList[i].draw()
+          }
+          animation.start = requestAnimationFrame(animation.animate)
+        }
+      }
+
+
+      let animation = new Animation()
+
+      canvas.addEventListener('click', function (e) { // 事件绑定获取 wave 队列
+        let wave = new Wave()
+        let pos = wave.getMousePos(e.clientX, e.clientY)
+        wave.setMousePos(pos.x, pos.y)
+        wave.initRadius(0)
+        animation.waveList.push(wave)
+      })
+
+      window.cancelAnimationFrame(animation.start)
+      window.requestAnimationFrame(animation.animate)
+
+    </script>
+  </body>
+</html>
